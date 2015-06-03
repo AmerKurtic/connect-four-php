@@ -129,25 +129,22 @@ class ConnectFour {
         }
 
         //Set a random player to start first
-        if(!$this->_getCurrentPlayer())
-        {
-            $this->_setCurrentPlayer(rand(1,2));
-        }
-        else
-        {
-            $this->_setCurrentPlayer($_SESSION['_current_player']);
-        }
+
 
 
         //start dropping pieces
-        $this->_dropPiece();
+        $this->_dropPiece($_POST['collomnr'], 1);
+
+
+
+        $this->_dropPiece($_input_computer, 2);
 
     }
 
     /**
      * Creates a 'move' for each player by randomly choosing a column to drop a piece into.
      */
-    protected function _dropPiece(){
+    protected function _dropPiece($_collomnr, $_current_player){
 
 //test
         //Check if total moves reached. (Recursive baseline)
@@ -161,21 +158,17 @@ class ConnectFour {
 
 
         //Random column chosen for placing chips
-        if(isset($_POST['collomnr']))
-        {
-            $_target_col = $_POST['collomnr'];
-        }
-        else {
-            $_target_col = rand(0, $this->getColumns() - 1);
-        }
-        $_current_board = $this->_getCurrentBoard();
+
+            $_target_col = $_collomnr;
+
+            $_current_board = $this->_getCurrentBoard();
 
         for( $row = $this->getRows()-1; $row>=0; $row-- ){
             //If slot is currently empty
             if( $_current_board[$row][$_target_col] === -1 ){
 
                 //Set slot to current player
-                $_current_board[$row][$_target_col] = $this->_getCurrentPlayer();
+                $_current_board[$row][$_target_col] = $_current_player;
 
                 //Update the no. of moves, might wana setter/getter this
                 $this->_moves++;
@@ -438,9 +431,21 @@ $this->_board_array = $board_array;
          return $isFull;
      }
 
+    protected function _checkForPossibleWinner( $row, $col ){
+
+        if($this->_horizontalPossibleWinCheck()
+            || $this->_verticalCheck($row, $col)
+        ){
+            return true;
+        }
+
+        return false;
+
+    }
+
     private function _horizontalPossibleWinCheck(){
         $_board_array = $this->_getCurrentBoard();
-        $empty = array();
+        $empty = "";
         for($c=1; $c<$this->_columns;$c++) {
             for ($r = 0; $r < ($this->_rows - 3); $r++) {
                 $count = 0;
@@ -452,8 +457,8 @@ $this->_board_array = $board_array;
                     }
                     elseif($_board_array[$i][$c] == "-1")
                     {
-                        $empty["r"] = $i;
-                        $empty["c"] = $c;
+                        $empty = $i;
+
                     }
                 }
                 if($count == 3 && !empty($empty))
