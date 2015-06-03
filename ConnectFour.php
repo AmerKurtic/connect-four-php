@@ -73,11 +73,11 @@ class ConnectFour {
      */
     function __construct( $rows = 6, $cols = 6){
         session_start();
-
         if(isset($_SESSION['_board_array']) && $_SESSION['_board_array'] != "")
         {
             $this->_moves = $_SESSION['_moves'];
             $this->_board_array = $_SESSION['_board_array'];
+            $this->_setCurrentPlayer($_SESSION['_current_player']);
         }
 
         $this->_setDimensions( $rows, $cols );
@@ -120,17 +120,18 @@ class ConnectFour {
     /**
      * The game board is initialized here and first move will begin after starting player is set.
      */
-    protected function _initGame(){
+    protected function _initGame()
+    {
 
         //Setup our game board
-        if(count($this->_board_array) == 0)
-        {
-            echo "test";
+        if(count($this->_board_array) == 0) {
             $this->_initializeGameBoard();
         }
 
+        echo $this->_getCurrentPlayer();
+
         //Set a random player to start first
-        if($this->_current_player == "")
+        if(!$this->_getCurrentPlayer())
         {
             $this->_setCurrentPlayer(rand(1,2));
         }
@@ -138,6 +139,7 @@ class ConnectFour {
         {
             $this->_setCurrentPlayer($_SESSION['_current_player']);
         }
+
 
         //start dropping pieces
         $this->_dropPiece();
@@ -185,10 +187,11 @@ class ConnectFour {
 
                     //If winner is found
                     $this->_showWinnerMessage();
-
+                    session_destroy();
                     return false;
 
                 }
+                $this->_togglePlayer();
                 //exit once a piece is dropped for this move
                 return false;
 
@@ -266,7 +269,6 @@ class ConnectFour {
     protected function _togglePlayer(){
 
         $this->_setCurrentPlayer($this->_getCurrentPlayer()===1?2:1);
-        $_SESSION['_current_player'] = $this->_current_player;
     }
 
     /**
@@ -286,7 +288,7 @@ class ConnectFour {
     protected function _setCurrentPlayer( $player_no ){
 
         $this->_current_player = $player_no;
-
+        $_SESSION['_current_player'] = $this->_current_player;
     }
 
     /**
