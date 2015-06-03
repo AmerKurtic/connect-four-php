@@ -128,8 +128,6 @@ class ConnectFour {
             $this->_initializeGameBoard();
         }
 
-        echo $this->_getCurrentPlayer();
-
         //Set a random player to start first
         if(!$this->_getCurrentPlayer())
         {
