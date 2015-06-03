@@ -26,7 +26,7 @@
 <p><img src="https://www.leaseweb.com/sites/all/themes/leaseweb/logo.svg" alt="logo" /></p>
 <h2>Connect 4</h2>
 Player 1 - Orange <br/>
-Player 2 - Blue <br/>
+Player 2 - Blue<br/>
 
 <div>
     <form action='index.php' method="post">
