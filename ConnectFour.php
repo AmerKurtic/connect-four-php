@@ -158,6 +158,7 @@ class ConnectFour {
             return false;
         }
 
+
         //Random column chosen for placing chips
         $_target_col = rand(0, $this->getColumns()-1);
         $_current_board = $this->_getCurrentBoard();
@@ -407,6 +408,65 @@ $this->_board_array = $board_array;
 
         return true;
 
+    }
+
+    private function _horizontalPossibleWinCheck(){
+        $_board_array = $this->_getCurrentBoard();
+        $empty = array();
+        for($c=1; $c<$this->_columns;$c++) {
+            for ($r = 0; $r < ($this->_rows - 3); $r++) {
+                $count = 0;
+                for ($i = $r; $i < ($r+3); $i++) {
+                    if ($_board_array[$i][$c] == 1) {
+
+                        $count++;
+
+                    }
+                    elseif($_board_array[$i][$c] == "-1")
+                    {
+                        $empty["r"] = $i;
+                        $empty["c"] = $c;
+                    }
+                }
+                if($count == 3 && !empty($empty))
+                {
+                    $d = $c + 1;
+                    if($_board_array[$i][$d] != "-1")
+                    {
+                        return $empty;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private function _verticalPossibleWinCheck(){
+        $_board_array = $this->_getCurrentBoard();
+        $empty = array();
+        $_player = 1;
+        $count = 0;
+        for($r=1; $r<$this->_rows;$r++) {
+            for ($c = 0; $c < ($this->_columns - 3); $c++) {
+                for ($i = $c; $i < ($c+3); $i++) {
+                    if ($_board_array[$r][$i] == $_player) {
+
+                        $count++;
+
+                    }
+                    elseif($_board_array[$r][$i] == "-1")
+                    {
+                        $empty["r"] = $r;
+                        $empty["c"] = $i;
+                    }
+                }
+                if($count == 3 && !empty($empty))
+                {
+                    return $empty;
+                }
+            }
+        }
+        return false;
     }
 
     /**
