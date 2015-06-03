@@ -17,8 +17,8 @@
             border-bottom:1px solid #444;
             text-indent:-9999px;
         }
-        table td.player-1{background:red; }
-        table td.player-2{background:blue; }
+        table td.player-1{background:#f39000; }
+        table td.player-2{background:#003366; }
     </style>
 </head>
 
