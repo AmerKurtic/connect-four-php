@@ -148,14 +148,13 @@ class ConnectFour {
      * Creates a 'move' for each player by randomly choosing a column to drop a piece into.
      */
     protected function _dropPiece(){
-
+//test
         //Check if total moves reached. (Recursive baseline)
         if( $this->_moves >= ( $this->getRows() * $this->getColumns() )) {
 
             //No winner then =(
             $this->_showNoWinnerMessage();
-
-
+            session_destroy();
             return false;
         }
 
@@ -198,7 +197,7 @@ class ConnectFour {
         }
 
         //If it comes to here, it means no slots are empty (column is full). Redo move again
-       // $this->_dropPiece();
+        $this->_dropPiece();
 
     }
 
