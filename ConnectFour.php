@@ -148,6 +148,7 @@ class ConnectFour {
      * Creates a 'move' for each player by randomly choosing a column to drop a piece into.
      */
     protected function _dropPiece(){
+
 //test
         //Check if total moves reached. (Recursive baseline)
         if( $this->_moves >= ( $this->getRows() * $this->getColumns() )) {
@@ -159,7 +160,13 @@ class ConnectFour {
         }
 
         //Random column chosen for placing chips
-        $_target_col = rand(0, $this->getColumns()-1);
+        if(isset($_POST['collomnr']))
+        {
+            $_target_col = $_POST['collomnr'];
+        }
+        else {
+            $_target_col = rand(0, $this->getColumns() - 1);
+        }
         $_current_board = $this->_getCurrentBoard();
 
         for( $row = $this->getRows()-1; $row>=0; $row-- ){
@@ -207,8 +214,21 @@ class ConnectFour {
     protected function _printBoard(){
 
         print '<p>Player '. $this->_getCurrentPlayer() .': Move No. ' . $this->_moves . '</p>';
+        //print '<table>';
+        print        '<tr>
+
+    <form action="index.php" method="post">';
+        print        '<td><input type="submit" name="collomnr" value="0" ' . $this->isColumnFull(0) . '></td>';
+        print        '<td><input type="submit" name="collomnr" value="1" ' . $this->isColumnFull(1) . '></td>';
+        print        '<td><input type="submit" name="collomnr" value="2" ' . $this->isColumnFull(2) . '></td>';
+        print        '<td><input type="submit" name="collomnr" value="3" ' . $this->isColumnFull(3) . '></td>';
+        print        '<td><input type="submit" name="collomnr" value="4" ' . $this->isColumnFull(4) . '></td>';
+        print        '<td><input type="submit" name="collomnr" value="5" ' . $this->isColumnFull(5) . '></td>';
+        print        '</form></tr>';
+       // print '</table>';
 
         print '<table>';
+
 
         $_board_array = $this->_getCurrentBoard();
 
@@ -237,14 +257,6 @@ class ConnectFour {
 
             print '</tr>';
 
-            print        '<tr>';
-            print        '<td><input type="submit" name="1" value="1"></td>';
-            print        '<td><input type="submit" name="2" value="2"></td>';
-            print        '<td><input type="submit" name="3" value="3"></td>';
-            print        '<td><input type="submit" name="4" value="4"></td>';
-            print        '<td><input type="submit" name="5" value="5"></td>';
-            print        '<td><input type="submit" name="6" value="6"></td>';
-            print        '</tr>';
 
         }
 
@@ -408,6 +420,21 @@ $this->_board_array = $board_array;
         return true;
 
     }
+     public function isColumnFull($colIndex) {
+         $_board_array = $this->_getCurrentBoard();
+         $_rows = $this->getRows();
+
+         $isFull = "";
+         //echo "<pre>";
+         //var_dump($this->_board_array);
+         //die;
+         if(-1 != $_board_array[0][$colIndex])
+         {
+             $isFull = "disabled";
+         }
+
+         return $isFull;
+     }
 
     /**
      * Set the number of rows and columns for the board

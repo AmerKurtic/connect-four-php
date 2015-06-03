@@ -38,10 +38,11 @@ Player 2 - Blue<br/>
 <?php
 //Load our file
 require 'ConnectFour.php';
-if(!empty($_POST['next_step']))
+if(isset($_POST['next_step']) || isset($_POST['collomnr']))
 {
     $new_game = new ConnectFour();
 }
+
 //Load our file
 // require 'ConnectFour.php';
 //Instantiate our game
