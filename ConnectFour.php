@@ -433,11 +433,7 @@ $this->_board_array = $board_array;
 
     protected function _checkForPossibleWinner( $row, $col ){
 
-        if($this->_horizontalPossibleWinCheck()
-            || $this->_verticalCheck($row, $col)
-        ){
-            return true;
-        }
+
 
         return false;
 
