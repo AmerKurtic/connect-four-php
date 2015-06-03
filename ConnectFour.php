@@ -233,7 +233,6 @@ class ConnectFour {
         $_board_array = $this->_getCurrentBoard();
 
         for($i = 0; $i < $this->getRows() ; $i ++ ){
-
             print '<tr>';
 
             for($j = 0; $j < $this->getColumns() ; $j ++ ){
@@ -255,10 +254,19 @@ class ConnectFour {
 
             }
 
+
             print '</tr>';
-
-
         }
+
+
+        print        '<tr>';
+        print        '<td><input type="submit" name="1" value="1"></td>';
+        print        '<td><input type="submit" name="2" value="2"></td>';
+        print        '<td><input type="submit" name="3" value="3"></td>';
+        print        '<td><input type="submit" name="4" value="4"></td>';
+        print        '<td><input type="submit" name="5" value="5"></td>';
+        print        '<td><input type="submit" name="6" value="6"></td>';
+        print        '</tr>';
 
         print '</table>';
     }
