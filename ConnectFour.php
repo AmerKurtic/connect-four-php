@@ -73,16 +73,24 @@ class ConnectFour {
      */
     function __construct( $rows = 6, $cols = 6){
         session_start();
-        if(isset($_SESSION['_board_array']) && $_SESSION['_board_array'] != "")
+        if(isset($_SESSION['_board_array']) && $_SESSION['_board_array'] != "" && isset($_POST['collomnr']))
         {
-            $this->_moves = $_SESSION['_moves'];
+            if (!empty($_SESSION['_moves'])){
+
+                $this->_moves = $_SESSION['_moves'];
+            }
             $this->_board_array = $_SESSION['_board_array'];
-            $this->_setCurrentPlayer($_SESSION['_current_player']);
+
         }
+
 
         $this->_setDimensions( $rows, $cols );
 
         $this->_initGame();
+
+        if (!isset($_POST['collomnr'])){
+            $this->_printBoard();
+        }
     }
 
     /**
@@ -131,13 +139,15 @@ class ConnectFour {
         //Set a random player to start first
 
 
+        if (isset($_POST['collomnr'])){
+            //start dropping pieces
+            $this->_dropPiece($_POST['collomnr'], 1);
 
-        //start dropping pieces
-        $this->_dropPiece($_POST['collomnr'], 1);
 
 
+            $this->_dropPiece($this->_getComputerTurn(), 2);
+        }
 
-        $this->_dropPiece($_input_computer, 2);
 
     }
 
@@ -198,7 +208,7 @@ class ConnectFour {
         }
 
         //If it comes to here, it means no slots are empty (column is full). Redo move again
-        $this->_dropPiece();
+        $this->_dropPiece($_collomnr, $_current_player);
 
     }
 
@@ -431,12 +441,14 @@ $this->_board_array = $board_array;
          return $isFull;
      }
 
-    protected function _checkForPossibleWinner( $row, $col ){
-
-
-
-        return false;
-
+    protected function _getComputerTurn(){
+        $_collomnr = rand(0, 5);
+        if ($this->_horizontalPossibleWinCheck() !== false){
+            $_collomnr = $this->_horizontalPossibleWinCheck();
+        } elseif ($this->_verticalPossibleWinCheck() !== false){
+            $_collomnr = $this->_verticalPossibleWinCheck();
+        }
+        return $_collomnr;
     }
 
     private function _horizontalPossibleWinCheck(){
